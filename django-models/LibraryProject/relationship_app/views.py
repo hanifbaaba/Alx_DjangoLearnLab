@@ -26,10 +26,10 @@ class LibraryDetailView(DetailView):
         context = ['books'] = self.objects.books.all()
         return context
 
-class UserLoginView(LoginView):
+class LoginView(LoginView):
     template_name = 'users/login.html'
 
-class UserLogoutView(LogoutView):
+class LogoutView(LogoutView):
     next_page = reverse_lazy('login')
 
 class UserRegistrationView(CreateView):
