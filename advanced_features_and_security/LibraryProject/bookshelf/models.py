@@ -9,7 +9,7 @@ class CustomUser(AbstractUser):
    
 
   
-class UserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, email, password):
         if not email:
             raise ValueError("User must have email address")
