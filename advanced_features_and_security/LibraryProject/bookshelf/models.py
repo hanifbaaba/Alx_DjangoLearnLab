@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to="profile/")
    
@@ -23,6 +23,9 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
+
+
+
 class Book(models.Model):
     title = models.CharField(max_length = 200)
     author = models.CharField(max_length=100)
