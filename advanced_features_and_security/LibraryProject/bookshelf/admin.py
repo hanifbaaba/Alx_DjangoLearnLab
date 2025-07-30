@@ -10,9 +10,6 @@ class BookAdmin(admin.ModelAdmin):
 
 admin.site.register(Book, BookAdmin)
 
-
-
-
 class UserAdmin(DefaultUserAdmin):
     model = User
     fieldsets = (
