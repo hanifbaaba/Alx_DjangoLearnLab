@@ -39,3 +39,9 @@ def delete_book(request, book_id):
     book.delete()
     return redirect('list_books')  
   return render(request, 'books/delete_book.html', {'book': book})
+
+
+def search_books(request):
+    query = request.GET.get('q', '')
+    books = Book.objects.filter(title__icontains=query)
+    return render(request, 'books.html', {'books': books})
