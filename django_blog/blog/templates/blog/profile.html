@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% extends 'blog/base.html' %} {% block title %}Your Profile | Django Blog{%
+    endblock %} {% block content %}
+    <h1>Your Profile</h1>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+
+      <fieldset>
+        <legend>Account</legend>
+        {{ u_form.as_p }}
+      </fieldset>
+
+      <fieldset>
+        <legend>Profile</legend>
+        {% if request.user.profile.image %}
+        <p>Current image:</p>
+        <img
+          src="{{ request.user.profile.image.url }}"
+          alt="Profile image"
+          style="max-width: 150px; height: auto"
+        />
+        {% endif %} {{ p_form.as_p }}
+      </fieldset>
+
+      <button type="submit">Save Changes</button>
+    </form>
+    {% endblock %}
+  </body>
+</html>
