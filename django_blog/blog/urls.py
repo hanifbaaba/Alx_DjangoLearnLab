@@ -8,7 +8,7 @@ urlpatterns = [
     path("login/", auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(next_page="login"), name="logout"),
     path("register/", views.register_view, name="register"),
-    path("profile/", views.profile_view, name="profile"),
+    # path("profile/", views.profile_view, name="profile"),
 
     path("posts/", PostListView.as_view(), name="post-list"),
     path("post/new/", PostCreateView.as_view(), name="post-create"),
@@ -17,7 +17,7 @@ urlpatterns = [
     path("post/<int:pk>/delete/", PostDeleteView.as_view(), name="post-delete"),
     path("post/<int:pk>/update/", PostUpdateView.as_view(), name="post-update"),
     # path("post/<int:pk>/update/"), PostUpdateView.as_view(), name = 'post-update'),
-    path('register/', views.register, name='register'),
+    path('register/', views.register_view, name='register'),
     path('profile/', views.profile, name='profile'),
     
 ]

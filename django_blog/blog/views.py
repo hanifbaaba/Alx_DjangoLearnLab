@@ -2,25 +2,26 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm
+from .forms import UserCreationForm, UserCreationForm, UserRegisterForm, UserUpdateForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from .forms import UserRegisterForm, PostForm, UserCreationForm , ProfileUpdateForm,UserUpdateForm
+from .forms import UserRegisterForm, PostForm, UserCreationForm , UserUpdateForm
 from .models import Post
 from django.contrib import messages
-from django .forms import PostForm
+# from django.forms import PostForm
+from .forms import PostForm
 
 
 def register_view(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user) 
             return redirect("profile")
     else:
-        form = CustomUserCreationForm()
+        form = UserCreationForm()
     return render(request, "registration/register.html", {"form": form})
 
 @login_required
@@ -75,7 +76,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 def profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        p_form = UserUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
@@ -85,7 +86,7 @@ def profile(request):
             messages.error(request, "Please fix the errors below.")
     else:
         u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.profile)
+        p_form = UserUpdateForm(instance=request.user.profile)
 
     context = {
         'u_form': u_form,
