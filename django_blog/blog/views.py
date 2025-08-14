@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from .forms import UserRegisterForm, PostForm, UserCreationForm , ProfileUpdateForm,UserUpdateForm
 from .models import Post
 from django.contrib import messages
+from django .forms import PostForm
 
 
 def register_view(request):
