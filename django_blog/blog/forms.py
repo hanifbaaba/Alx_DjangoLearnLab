@@ -22,12 +22,14 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ["title", "content", "tags"]
-        widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter post title"}),
-            "content": forms.Textarea(attrs={"class": "form-control", "placeholder": "Write your post..."}),
-            "tags": TagWidget(attrs={"class": "form-control"}), 
+        # widgets = {
+        #     "title": forms.TextInput(attrs={"class": "form-control", "placeholder": "Enter post title"}),
+        #     "content": forms.Textarea(attrs={"class": "form-control", "placeholder": "Write your post..."}),
+        #     "tags": TagWidget(attrs={"class": "form-control"}), 
+        # },
+    widgets = {
+            'tags': TagWidget(), 
         }
-
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
