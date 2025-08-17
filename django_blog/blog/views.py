@@ -84,7 +84,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 @login_required
-def add_comment(request, pk):
+def CommentCreateView(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
         form = CommentForm(request.POST)
@@ -100,7 +100,7 @@ def add_comment(request, pk):
 
 
 @login_required
-def edit_comment(request, pk):
+def CommentUpdateView(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if comment.author != request.user:
         messages.error(request, "You are not allowed to edit this comment.")
@@ -118,7 +118,7 @@ def edit_comment(request, pk):
 
 
 @login_required
-def delete_comment(request, pk):
+def CommentDeleteView(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if comment.author != request.user:
         messages.error(request, "You are not allowed to delete this comment.")
