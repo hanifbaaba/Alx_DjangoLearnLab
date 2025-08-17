@@ -5,10 +5,9 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
 from .forms import UserRegisterForm, UserUpdateForm, PostForm, CommentForm
 from .models import Post, Comment
-
+from django.db.models import Q
 
 def register_view(request):
     if request.method == "POST":
@@ -129,3 +128,19 @@ def CommentDeleteView(request, pk):
         return redirect("post-detail", pk=comment.post.pk)
 
     return render(request, "blog/delete_comment.html", {"comment": comment})
+
+def search_posts(request):
+    query = request.GET.get("q")
+    posts = Post.objects.all()
+    if query:
+        posts = posts.filter(
+            Q(title__icontains=query) | 
+            Q(content__icontains=query) | 
+            Q(tags__name__icontains=query)
+        ).distinct()
+    return render(request, "blog/search_results.html", {"posts": posts, "query": query})
+
+
+def posts_by_tag(request, tag_name):
+    posts = Post.objects.filter(tags__name__iexact=tag_name)
+    return render(request, "blog/posts_by_tag.html", {"posts": posts, "tag": tag_name})
