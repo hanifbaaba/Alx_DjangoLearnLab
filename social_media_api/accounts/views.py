@@ -7,16 +7,15 @@ from .models import CustomUser
 from rest_framework import generics, status, permissions
 
 
-class UserView(APIView):
+class UserView(generics.GenericAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [ IsAuthenticated]
-
 
     def get(self,request):
         return request({"message": f"Hello{request.user.username}, you are authenticated!"})
     
 
-class FollowUserView(APIView):
+class FollowUserView(generics.GenericAPIView):
     queryset = CustomUser.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
