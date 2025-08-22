@@ -3,7 +3,7 @@ from .models import Comment, Post
 from .serializers import CommentSerializer, PostSerializer
 from rest_framework.permissions import  IsAuthenticated
 from rest_framework import generics, mixins, permissions, viewsets
-# Create your views here.
+
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
   def has_object_permission(self, request, view, obj):

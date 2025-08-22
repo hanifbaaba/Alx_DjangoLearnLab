@@ -5,3 +5,4 @@ from .views import PostCreateView, CommentCreateView
 router = DefaultRouter()
 router.register(r'posts', PostCreateView, basename='post')
 router.register(r'comments', CommentCreateView, basename='comment')
+urlpatterns = router.urls
