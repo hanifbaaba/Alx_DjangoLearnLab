@@ -3,6 +3,10 @@ from .models import Comment, Post
 from .serializers import CommentSerializer, PostSerializer
 from rest_framework.permissions import  IsAuthenticated
 from rest_framework import generics, mixins, permissions, viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
@@ -80,3 +84,15 @@ class CommentDeleteView(viewsets.ModelViewSet):
         DELETE /comment/delete/<id>/ — Delete a comment.
         """
         return self.destroy(request, *args, **kwargs)
+
+class UserFeedView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    # serializer_class = PostSerializer
+    # queryset = Post.objects.all()
+
+    def feed(self, request):
+        following_users = request.user.following.all()
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
