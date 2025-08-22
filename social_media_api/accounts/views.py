@@ -1,14 +1,11 @@
-# from django.shortcuts import render
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404, redirect
-# from django.contrib.auth.decorators import login_required 
 from .models import CustomUser
-# from django.contrib.auth.models import User
+from rest_framework import generics, status, permissions
 
-# Create your views here.
 
 class UserView(APIView):
     authentication_classes = [TokenAuthentication]
@@ -20,8 +17,10 @@ class UserView(APIView):
     
 
 class FollowUserView(APIView):
+    queryset = CustomUser.objects.all()
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
+  
 
     def post(self, request, user_id):
         """Authenticated user follows another user"""
@@ -36,7 +35,8 @@ class FollowUserView(APIView):
 
 class UnfollowUserView(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = CustomUser.objects.all()
 
     def post(self, request, user_id):
         """Authenticated user unfollows another user"""
