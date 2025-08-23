@@ -100,23 +100,34 @@ class UserFeedView(APIView):
         return Response(serializer.data)
 
 
-def like_unlike_post(request,pk):
-    post = generics.get_object_or_404(Post,pk= pk)
-    user = request.user
-
-    if request.method == 'POST':
-        like, created = Like.objects.get_or_create(user=user, post=post)
-
-
-    if not created:
-        like.delete()
+class LikePostView(APIView):
+  permission_classes = [IsAuthenticated]
+  
+  def post(self, request, pk):
+    post = generics.get_object_or_404(Post, pk=pk)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
     
-    else:
-        # Like.objects.create(user=user, post = post)
+    if created:
+      if post.author != request.user:
         Notification.objects.create(
-            user = post.author,
-            sender = user,
-            post = post,
-            notification_type = like
+          recipient=post.author,
+          actor = request.user,
+          verb='liked your post',
+          target=post,
         )
-    return redirect('post_detail', pk=pk)
+      return Response({'message': 'Post liked successfuly!'})
+    else:
+      return Response({'message': 'you already liked this post.'}, status=400)
+    
+class UnlikePostView(APIView):
+  permission_classes = [IsAuthenticated]
+  
+  def post(self, request, pk):
+    post = generics.get_object_or_404(Post, pk=pk)
+    like = Like.objects.filter(user=request.user, post=post)
+    
+    if like.exists():
+      like.delete()
+      return Response({'message': 'Post unliked successfully!'})
+    else:
+      return Response({'message': 'You have not liked this post yet.'}, status=400)
