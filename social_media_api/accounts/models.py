@@ -17,8 +17,8 @@ class CustomUser(AbstractUser):
           related_name='followers_set',
           blank=True      
     )
-    class Meta:
-        unique_together = ('follower','following')
+    # class Meta:
+    #     unique_together = ('follower','following')
     def __str__(self):
         return self.username
 
