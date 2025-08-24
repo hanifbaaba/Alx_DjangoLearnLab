@@ -90,8 +90,7 @@ class CommentDeleteView(viewsets.ModelViewSet):
 class UserFeedView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    # serializer_class = PostSerializer
-    # queryset = Post.objects.all()
+
 
     def feed(self, request):
         following_users = request.user.following.all()
